@@ -1,2 +1,4 @@
-# pixel-v2
-pixel re-write using discord http interactions
+# pixel-serverless
+a pixel instance for app command handling
+
+✨ Hosted on [Deta Cloud](https://deta.sh) for free & forever
