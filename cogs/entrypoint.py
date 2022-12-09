@@ -1,6 +1,4 @@
-import deta
 import discohook as dh
-from utils.db import db
 
 
 class Help(dh.Cog):
