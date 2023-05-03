@@ -1,0 +1,20 @@
+v: 0
+app_name: PixeL
+icon: ./assets/icon.webp
+micros:
+  - name: backend
+    src: ./
+    engine: python3.9
+    primary: true
+    presets:
+      env:
+        - name: APPLICATION_ID
+          description: "Discord Application ID"
+        - name: PUBLIC_KEY
+          description: "Discord Public Key"
+        - name: DISCORD_TOKEN
+            description: "Discord Bot Token"
+        - name: LOG_CHANNEL_ID
+            description: "Discord Log Channel ID"
+    public_routes:
+      - "/interactions"

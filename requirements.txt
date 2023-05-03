@@ -1,2 +1,4 @@
 git+https://github.com/jnsougata/deta
 git+https://github.com/jnsougata/discohook
+fastapi
+aiohttp
