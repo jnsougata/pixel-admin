@@ -1,7 +1,7 @@
 import re
 import deta
 import aiohttp
-import discohook as dh
+import discohook
 from utils.db import db
 from datetime import datetime
 
@@ -27,22 +27,22 @@ async def fetch_channel(channel_id: str) -> dict:
                 return await resp.json()
 
 
-@dh.command(
+@discohook.command(
     name="subscribe",
     description="subscribe to a youtube feed",
     options=[
-        dh.StringOption("url", "the url of the youtube channel", required=True),
-        dh.ChannelOption(
+        discohook.StringOption("url", "the url of the youtube channel", required=True),
+        discohook.ChannelOption(
             "channel",
             "the channel to send the updates to",
             required=True,
-            channel_types=[dh.ChannelType.guild_text]
+            channel_types=[discohook.ChannelType.guild_text]
         ),
     ],
-    permissions=[dh.Permissions.manage_guild],
+    permissions=[discohook.Permissions.manage_guild],
     dm_access=False,
 )
-async def subscribe(i: dh.Interaction, url: str, channel: dh.Channel):
+async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Channel):
     await i.defer(ephemeral=True)
     channel_info = await fetch_channel(form_id(url))
     if not channel_info:
@@ -76,7 +76,7 @@ async def subscribe(i: dh.Interaction, url: str, channel: dh.Channel):
             )
             await db.update(i.guild_id, updater)
 
-    emd = dh.Embed(
+    emd = discohook.Embed(
         title=channel_info["name"],
         url=channel_info["url"],
         description=(
@@ -95,5 +95,5 @@ async def subscribe(i: dh.Interaction, url: str, channel: dh.Channel):
     await i.followup(embed=emd, ephemeral=True)
 
 
-def setup(app: dh.Client):
-    app.load_commands(subscribe)
+def setup(app: discohook.Client):
+    app.add_commands(subscribe)

@@ -1,19 +1,19 @@
-import discohook as dh
+import discohook
 
 
-@dh.command(name="help", description="get help with the bot")
-async def help_command(i: dh.Interaction):
+@discohook.command(name="help", description="get help with the bot")
+async def help_command(i: discohook.Interaction):
     inv = 'https://top.gg/bot/848304171814879273/invite'
     sup = 'https://discord.gg/VE5qRFfmG2'
     uv = 'https://top.gg/bot/848304171814879273/vote'
 
-    view = dh.View()
-    inv_btn = dh.Button(label='Invite', style=dh.ButtonStyle.link, url=inv)
-    sup_btn = dh.Button(label='Support', style=dh.ButtonStyle.link, url=sup)
-    uv_btn = dh.Button(label='Upvote', style=dh.ButtonStyle.link, url=uv)
+    view = discohook.View()
+    inv_btn = discohook.Button(label='Invite', style=discohook.ButtonStyle.link, url=inv)
+    sup_btn = discohook.Button(label='Support', style=discohook.ButtonStyle.link, url=sup)
+    uv_btn = discohook.Button(label='Upvote', style=discohook.ButtonStyle.link, url=uv)
     view.add_button_row(inv_btn, sup_btn, uv_btn)
 
-    embed = dh.Embed(
+    embed = discohook.Embed(
         title='Commands',
         color=0xc4302b,
         description=(
@@ -34,5 +34,5 @@ async def help_command(i: dh.Interaction):
     await i.response(embed=embed, view=view)
 
 
-def setup(app: dh.Client):
-    app.load_commands(help_command)
+def setup(app: discohook.Client):
+    app.add_commands(help_command)

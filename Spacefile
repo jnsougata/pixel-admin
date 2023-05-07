@@ -13,8 +13,8 @@ micros:
         - name: PUBLIC_KEY
           description: "Discord Public Key"
         - name: DISCORD_TOKEN
-            description: "Discord Bot Token"
+          description: "Discord Bot Token"
         - name: LOG_CHANNEL_ID
-            description: "Discord Log Channel ID"
+          description: "Discord Log Channel ID"
     public_routes:
       - "/interactions"

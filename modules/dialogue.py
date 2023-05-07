@@ -1,5 +1,5 @@
 import deta
-import discohook as dh
+import discohook
 from utils.db import db
 
 for_welcomer = (
@@ -16,25 +16,25 @@ for_feed = (
 )
 
 
-@dh.command(
+@discohook.command(
     name="dialogue",
     description="set a custom dialogue for the welcomer and feed",
     options=[
-        dh.IntegerOption("option", "the type of dialogue", required=True, choices=[
-            dh.Choice("Feed", 1),
-            dh.Choice("Welcomer", 2),
+        discohook.IntegerOption("option", "the type of dialogue", required=True, choices=[
+            discohook.Choice("Feed", 1),
+            discohook.Choice("Welcomer", 2),
         ]),
     ],
-    permissions=[dh.Permissions.manage_guild],
+    permissions=[discohook.Permissions.manage_guild],
     dm_access=False,
 )
-async def dialogue_command(i: dh.Interaction, option: int):
-    modal = dh.Modal("YouTube Feed Custom Dialogue")
+async def dialogue_command(i: discohook.Interaction, option: int):
+    modal = discohook.Modal("YouTube Feed Custom Dialogue")
     if option == 1:
-        modal.add_field("Options", "options", default_text=for_feed, style=dh.TextInputFieldLength.long)
+        modal.add_field("Options", "options", default_text=for_feed, style=discohook.TextInputFieldLength.long)
 
         @modal.on_interaction
-        async def submit(m: dh.Interaction, dialogue: str = None):
+        async def submit(m: discohook.Interaction, dialogue: str = None):
             record = await db.get(m.guild_id)
             if not record or not record[0].get("CUSTOM"):
                 u = deta.Updater()
@@ -44,17 +44,17 @@ async def dialogue_command(i: dh.Interaction, option: int):
             updater = deta.Updater()
             updater.set("CUSTOM.youtube", dialogue)
             await db.update(m.guild_id, updater)
-            embed = dh.Embed(description=f'> ✅ Custom Dialogue set for YouTube Feed\n\n```\n{dialogue}\n```')
+            embed = discohook.Embed(description=f'> ✅ Custom Dialogue set for YouTube Feed\n\n```\n{dialogue}\n```')
             await m.response(embed=embed, ephemeral=True)
 
         await i.send_modal(modal=modal)
 
     if option == 2:
-        modal = dh.Modal("Welcomer Custom Dialogue")
-        modal.add_field("Options", "options", default_text=for_welcomer, style=dh.TextInputFieldLength.long)
+        modal = discohook.Modal("Welcomer Custom Dialogue")
+        modal.add_field("Options", "options", default_text=for_welcomer, style=discohook.TextInputFieldLength.long)
 
         @modal.on_interaction
-        async def submit(m: dh.Interaction, dialogue: str = None):
+        async def submit(m: discohook.Interaction, dialogue: str = None):
             record = await db.get(m.guild_id)
             if not record or not record[0].get("CUSTOM"):
                 u = deta.Updater()
@@ -64,12 +64,12 @@ async def dialogue_command(i: dh.Interaction, option: int):
             updater = deta.Updater()
             updater.set("CUSTOM.welcome", dialogue)
             await db.update(m.guild_id, updater)
-            embed = dh.Embed(description=f'> ✅ Custom Dialogue set for Welcomer\n\n```\n{dialogue}\n```')
+            embed = discohook.Embed(description=f'> ✅ Custom Dialogue set for Welcomer\n\n```\n{dialogue}\n```')
             await m.response(embed=embed, ephemeral=True)
 
-    modal.add_field("Custom Dialogue", "dialogue", required=True, style=dh.TextInputFieldLength.long)
+    modal.add_field("Custom Dialogue", "dialogue", required=True, style=discohook.TextInputFieldLength.long)
     await i.send_modal(modal=modal)
 
 
-def setup(app: dh.Client):
-    app.load_commands(dialogue_command)
+def setup(app: discohook.Client):
+    app.add_commands(dialogue_command)
