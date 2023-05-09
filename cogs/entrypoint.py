@@ -11,7 +11,7 @@ async def help_command(i: discohook.Interaction):
     inv_btn = discohook.Button(label='Invite', style=discohook.ButtonStyle.link, url=inv)
     sup_btn = discohook.Button(label='Support', style=discohook.ButtonStyle.link, url=sup)
     uv_btn = discohook.Button(label='Upvote', style=discohook.ButtonStyle.link, url=uv)
-    view.add_button_row(inv_btn, sup_btn, uv_btn)
+    view.add_buttons(inv_btn, sup_btn, uv_btn)
 
     embed = discohook.Embed(
         title='Commands',

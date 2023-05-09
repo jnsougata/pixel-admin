@@ -48,7 +48,7 @@ async def remove(i: discohook.Interaction, option: int):
         )
 
         @channel_menu.on_interaction
-        async def selection_menu(ci: discohook.ComponentInteraction, values: list):
+        async def selection_menu(ci: discohook.Interaction, values: list):
             updater = deta.Updater()
             for value in values:
                 updater.delete(f"CHANNELS.{value}")
@@ -56,7 +56,7 @@ async def remove(i: discohook.Interaction, option: int):
             await ci.update_message("> ✅ Unsubscribed selected channels(s)", view=None, embed=None)
 
         view = discohook.View()
-        view.add_select_menu(channel_menu)
+        view.add_select(channel_menu)
         await i.followup(view=view)
 
     elif option == 2:

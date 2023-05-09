@@ -9,12 +9,7 @@ app = discohook.Client(
     token=os.getenv("DISCORD_TOKEN"),
 )
 
-modules = [
-    f"modules.{script[:-3]}" for script in os.listdir("modules")
-    if script.endswith(".py")
-]
-
-app.load_modules(*modules)
+app.load_modules("cogs")
 
 
 @app.get("/")   
