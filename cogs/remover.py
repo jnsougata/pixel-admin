@@ -34,10 +34,11 @@ async def fetch_channel(channel_id: str) -> dict:
 async def remove(i: discohook.Interaction, option: int):
     if option == 1:
         record = await db.get(i.guild_id)
-        if not record or not record[0].get("CHANNELS"):
+        data = await record[0].json()
+        if not data or not data.get("CHANNELS"):
             return await i.response("> ⚠️ No channels subscribed", ephemeral=True)
         await i.defer(ephemeral=True)
-        channel_ids = list(record[0]["CHANNELS"].keys())
+        channel_ids = list(data["CHANNELS"].keys())
         tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
         channels = await asyncio.gather(*tasks)
         valids = [channel for channel in channels if channel]
