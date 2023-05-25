@@ -33,32 +33,33 @@ async def fetch_channel(channel_id: str) -> dict:
 )
 async def remove(i: discohook.Interaction, option: int):
     if option == 1:
-        record = await db.get(i.guild_id)
-        data = await record[0].json()
-        if not data or not data.get("CHANNELS"):
+        try:
+            record = await db.get(i.guild_id)
+        except deta.NotFound:
             return await i.response("> ⚠️ No channels subscribed", ephemeral=True)
-        await i.defer(ephemeral=True)
-        channel_ids = list(data["CHANNELS"].keys())
-        tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
-        channels = await asyncio.gather(*tasks)
-        valids = [channel for channel in channels if channel]
-        channel_menu = discohook.Select(
-            options=[discohook.SelectOption(channel["name"], channel["id"]) for channel in valids],
-            max_values=len(valids),
-            placeholder="select channel(s) from list",
-        )
+        else:
+            await i.defer(ephemeral=True)
+            channel_ids = list(record.get("CHANNELS", {}).keys())
+            tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
+            channels = await asyncio.gather(*tasks)
+            valids = [channel for channel in channels if channel]
+            channel_menu = discohook.Select(
+                options=[discohook.SelectOption(channel["name"], channel["id"]) for channel in valids],
+                max_values=len(valids),
+                placeholder="select channel(s) from list",
+            )
 
-        @channel_menu.on_interaction
-        async def selection_menu(ci: discohook.Interaction, values: list):
-            updater = deta.Updater()
-            for value in values:
-                updater.delete(f"CHANNELS.{value}")
-            await db.update(ci.guild_id, updater)
-            await ci.update_message("> ✅ Unsubscribed selected channels(s)", view=None, embed=None)
+            @channel_menu.on_interaction
+            async def selection_menu(ci: discohook.Interaction, values: list):
+                updater = deta.Updater()
+                for value in values:
+                    updater.delete(f"CHANNELS.{value}")
+                await db.update(ci.guild_id, updater)
+                await ci.update_message("> ✅ Unsubscribed selected channels(s)", view=None, embed=None)
 
-        view = discohook.View()
-        view.add_select(channel_menu)
-        await i.followup(view=view)
+            view = discohook.View()
+            view.add_select(channel_menu)
+            await i.followup(view=view)
 
     elif option == 2:
         await db.put(deta.Record({"PINGROLE": None}, key=i.guild_id))

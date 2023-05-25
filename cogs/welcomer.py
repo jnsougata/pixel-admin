@@ -10,7 +10,7 @@ from utils.db import db, drive
         discohook.ChannelOption(
             "channel",
             "the channel to send the welcome message to",
-            required=True, channel_types=[discohook.ChannelType.guild_text]
+            required=True, channel_types=[discohook.ChannelType.guild_text, discohook.ChannelType.guild_news]
         ),
         discohook.AttachmentOption("image", "the image to send with the welcome message"),
     ],
