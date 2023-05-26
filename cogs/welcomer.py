@@ -10,11 +10,7 @@ from utils.db import db, drive
         discohook.ChannelOption(
             "channel",
             "the channel to send the welcome message to",
-            required=True,
-            channel_types=[
-                discohook.ChannelType.guild_text,
-                discohook.ChannelType.guild_news,
-            ]
+            required=True, channel_types=[discohook.ChannelType.guild_text, discohook.ChannelType.guild_news]
         ),
         discohook.AttachmentOption("image", "the image to send with the welcome message"),
     ],
@@ -28,7 +24,7 @@ async def welcomer(i: discohook.Interaction, channel: discohook.Channel, image: 
     await db.update(i.guild_id, updater)
     if image:
         await drive.put(await image.read(), save_as=f"{i.guild_id}_card.png", folder="covers")
-        embed = discohook.Embed(description=f'> ✅ Welcomer bound to {channel.mention} with image below')
+        embed = discohook.Embed(description=f'> ✅ Welcomer bound to {channel.mention} with given Image')
         embed.image(url=image.url)
         await i.followup(embed=embed, ephemeral=True)
     else:

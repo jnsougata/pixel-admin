@@ -51,33 +51,34 @@ async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Chann
     if not channel_info:
         return await i.followup("Invalid channel url", ephemeral=True)
     channel_id = channel_info["id"]
-    existing = await db.get(i.guild_id)
-    if existing:
-        if existing[0].get("CHANNELS") and len(existing[0]["CHANNELS"]) >= 10:
-            await i.followup("> ⚠️ Max subscription limit reached!")
-            return
-        elif not existing[0].get("CHANNELS"):
-            updater = deta.Updater()
-            updater.set(
-                "CHANNELS",
-                {
-                    channel_id: {
-                        'receiver': channel_id,
-                        'last_published': str(int(datetime.utcnow().timestamp()))
-                    }
-                }
-            )
-            await db.update(i.guild_id, updater)
-        else:
-            updater = deta.Updater()
-            updater.set(
-                f"CHANNELS.{channel_id}",
-                {
+    try:
+        record = await db.get(i.guild_id)
+    except deta.NotFound:
+        await db.put(deta.Record({"CHANNELS": {}}, key=i.guild_id))
+        record = {"CHANNELS": {}}
+    if record.get("CHANNELS") and len(record["CHANNELS"]) >= 10:
+        return await i.followup("> ⚠️ Max subscription limit reached!")
+    elif not record.get("CHANNELS"):
+        updater = deta.Updater()
+        updater.set(
+            "CHANNELS",
+            {
+                channel_id: {
                     'receiver': channel.id,
                     'last_published': str(int(datetime.utcnow().timestamp()))
                 }
-            )
-            await db.update(i.guild_id, updater)
+            }
+        )
+    else:
+        updater = deta.Updater()
+        updater.set(
+            f"CHANNELS.{channel_id}",
+            {
+                'receiver': channel.id,
+                'last_published': str(int(datetime.utcnow().timestamp()))
+            }
+        )
+    await db.update(i.guild_id, updater)
 
     emd = discohook.Embed(
         title=channel_info["name"],
