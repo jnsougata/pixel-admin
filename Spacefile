@@ -1,6 +1,6 @@
 v: 0
 app_name: PixeL
-icon: ./assets/icon.webp
+icon: ./assets/icon.png
 micros:
   - name: backend
     src: ./
