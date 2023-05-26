@@ -36,20 +36,22 @@ async def overview(i: discohook.Interaction, option: int):
             else:
                 channel_ids = list(record["CHANNELS"].keys())
                 embed = discohook.Embed(title="Subscribed Channels")
-                for channel_id in channel_ids:
-                    embed.add_field(name=channel_id, value=f"[link](https://youtube.com/channel/{channel_id})")
+                embed.description = "\n".join(
+                    [f"[{channel_id}](https://youtube.com/channel/{channel_id})" for channel_id in channel_ids])
                 await i.followup(embed=embed)
         elif option == 2:
             if not record.get("PINGROLE"):
                 return await i.followup("> ⚠️ No pingrole set")
             else:
                 await i.followup(
-                    embed=discohook.Embed(title="Ping Role", description=f"<@&{record['PINGROLE']}>"),
-                    ephemeral=True
+                    embed=discohook.Embed(
+                        title="Ping Role",
+                        description=f"<@&{record['PINGROLE']}> is set as pingrole"
+                    )
                 )
         elif option == 3:
             if not record.get("RECEPTION"):
-                return await i.followup("> ⚠️ No welcomer set", ephemeral=True)
+                return await i.followup("> ⚠️ No welcomer set")
             else:
                 embed = discohook.Embed(title="Welcomer")
                 embed.description = f"Welcomer bound to <#{record['RECEPTION']}>"
@@ -60,7 +62,7 @@ async def overview(i: discohook.Interaction, option: int):
                 card_data = await card_stream.read()
                 embed.image("attachment://welcome_card.png")
                 file = discohook.File("welcome_card.png", content=io.BytesIO(card_data))
-                await i.followup(embed=embed, file=file, ephemeral=True)
+                await i.followup(embed=embed, file=file)
 
 
 def setup(client: discohook.Client):
