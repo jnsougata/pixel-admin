@@ -1,7 +1,6 @@
 import os
 import traceback
 import discohook
-from fastapi.responses import RedirectResponse
 
 app = discohook.Client(
     application_id=os.getenv("APPLICATION_ID"),
@@ -12,23 +11,25 @@ app = discohook.Client(
 app.load_modules("cogs")
 
 
-@app.get("/")   
-def root():
-    return RedirectResponse("https://top.gg/bot/848304171814879273")
-
-
-@app.get("/policy")
-def policy():
-    return RedirectResponse("https://verified.gitbook.io/pixel/privacy-policy")
-
-
-@app.get("/source")
-def src():
-    return RedirectResponse("https://github.com/jnsougata/pixel")
+@app.get("/")
+async def index():
+    return {"message": "PixeL is Online!"}
 
 
 @app.on_error
-async def on_error(_, e: Exception):
+async def on_error(i: discohook.Interaction, e: Exception):
+    embed = discohook.Embed(
+        title='Oops!',
+        description=f'Something went wrong!'
+                    f'\nTrying again might fix it.'
+                    f'\nIf not, please contact the developer.'
+                    f'\n\nTo Join Development Server [Click Here](https://discord.gg/ChJbUv7z8V)',
+        color=0xff0000
+    )
+    if i.responded:
+        await i.followup(embed=embed, ephemeral=True)
+    else:
+        await i.response(embed=embed, ephemeral=True)
     err = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
     embed = discohook.Embed(
         title='Stack Trace', 

@@ -1,6 +1,6 @@
 v: 0
 app_name: PixeL
-icon: ./assets/icon.webp
+icon: ./assets/icon.png
 micros:
   - name: backend
     src: ./
@@ -16,5 +16,7 @@ micros:
           description: "Discord Bot Token"
         - name: LOG_CHANNEL_ID
           description: "Discord Log Channel ID"
+        - name: COLLECTION_KEY
+          description: "Deta Space Collection Key"
     public_routes:
       - "/interactions"

@@ -31,13 +31,16 @@ async def fetch_channel(channel_id: str) -> dict:
     name="subscribe",
     description="subscribe to a youtube feed",
     options=[
-        discohook.StringOption("url", "the url of the youtube channel", required=True),
         discohook.ChannelOption(
-            "channel",
+            "text_channel",
             "the channel to send the updates to",
             required=True,
-            channel_types=[discohook.ChannelType.guild_text]
+            channel_types=[
+                discohook.ChannelType.guild_text,
+                discohook.ChannelType.guild_news
+            ]
         ),
+        discohook.StringOption("url", "youtube channel url", required=True),
     ],
     permissions=[discohook.Permissions.manage_guild],
     dm_access=False,
