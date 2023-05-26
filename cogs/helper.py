@@ -27,7 +27,7 @@ async def help_command(i: discohook.Interaction):
             f'\n● set up dialogue for welcomer and feed'
             f'\n\n5️⃣ </remove:1049447008433340539>'
             f'\n● remove a specific option from the server'
-            f'\n\n6️⃣ </overview:936634659763286076>'
+            f'\n\n6️⃣ </overview:1111767686742020136>'
             f'\n● check any currently set server config'
         )
     )

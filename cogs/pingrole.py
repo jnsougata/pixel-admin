@@ -1,6 +1,6 @@
 import deta
 import discohook
-from utils.db import db
+from utils.database import db
 
 
 @discohook.command(

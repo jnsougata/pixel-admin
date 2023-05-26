@@ -2,7 +2,7 @@ import re
 import deta
 import aiohttp
 import discohook
-from utils.db import db
+from utils.database import db
 from datetime import datetime
 
 
@@ -32,8 +32,8 @@ async def fetch_channel(channel_id: str) -> dict:
     description="subscribe to a youtube feed",
     options=[
         discohook.ChannelOption(
-            "text_channel",
-            "the channel to send the updates to",
+            "channel",
+            "text channel to send the updates to",
             required=True,
             channel_types=[
                 discohook.ChannelType.guild_text,

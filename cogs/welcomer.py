@@ -1,6 +1,6 @@
 import deta
 import discohook
-from utils.db import db, drive
+from utils.database import db, drive
 
 
 @discohook.command(
@@ -9,8 +9,12 @@ from utils.db import db, drive
     options=[
         discohook.ChannelOption(
             "channel",
-            "the channel to send the welcome message to",
-            required=True, channel_types=[discohook.ChannelType.guild_text, discohook.ChannelType.guild_news]
+            "text channel to send the welcome message to",
+            required=True,
+            channel_types=[
+                discohook.ChannelType.guild_text,
+                discohook.ChannelType.guild_news
+            ]
         ),
         discohook.AttachmentOption("image", "the image to send with the welcome message"),
     ],

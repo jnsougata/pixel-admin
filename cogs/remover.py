@@ -2,7 +2,7 @@ import deta
 import asyncio
 import aiohttp
 import discohook
-from utils.db import db
+from utils.database import db
 
 
 async def fetch_channel(channel_id: str) -> dict:

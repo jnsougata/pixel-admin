@@ -1,6 +1,6 @@
 import deta
 import discohook
-from utils.db import db
+from utils.database import db
 
 for_welcomer = (
     '[guild.name] will be replaced with name of the Guild'
