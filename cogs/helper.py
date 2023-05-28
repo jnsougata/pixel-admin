@@ -19,8 +19,6 @@ async def help_command(i: discohook.Interaction):
         description=(
             f'\n\n1️⃣ </subscribe:1049447008433340540>'
             f'\n● set up the YouTube channel for the server'
-            f'\n\n2️⃣ </welcomer:1049447008433340541>'
-            f'\n● set up the welcome message for the server'
             f'\n\n3️⃣ </pingrole:1049447008433340538>'
             f'\n● set up the ping role for the server'
             f'\n\n4️⃣ </dialogue:1049447008433340537>'
@@ -29,8 +27,10 @@ async def help_command(i: discohook.Interaction):
             f'\n● remove a specific option from the server'
             f'\n\n6️⃣ </overview:1111767686742020136>'
             f'\n● check any currently set server config'
-            f'\n\n **Note:** Welcomer has been deprecated and will be removed soon.'
-            f'\nTo download the current welcomer card, use </overview:1111767686742020136> and click on the image.'
+            f'\n\n **Note:** Welcomer has been deprecated '
+            f'\nand will be removed soon.'
+            f'\nTo download the current welcomer card, '
+            f'\nuse </overview:1111767686742020136> and click on the image.'
         )
     )
     await i.response(embed=embed, view=view)
