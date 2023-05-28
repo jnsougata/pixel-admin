@@ -25,12 +25,12 @@ async def help_command(i: discohook.Interaction):
             f'\n● set up dialogue for welcomer and feed'
             f'\n\n5️⃣ </remove:1049447008433340539>'
             f'\n● remove a specific option from the server'
-            f'\n\n6️⃣ </overview:1111767686742020136>'
+            f'\n\n6️⃣ </overview:1112284625579024455>'
             f'\n● check any currently set server config'
             f'\n\n **Note:** Welcomer has been deprecated '
             f'\nand will be removed soon.'
             f'\nTo download the current welcomer card, '
-            f'\nuse </overview:1111767686742020136> and click on the image.'
+            f'\nuse </overview:1112284625579024455> and click on the image.'
         )
     )
     await i.response(embed=embed, view=view)
