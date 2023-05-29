@@ -23,7 +23,7 @@ async def dialogue_command(i: discohook.Interaction):
     @modal.on_interaction
     async def submit(m: discohook.Interaction, dialogue: str = None):
         record = await db.get(m.guild_id)
-        if not record or not record[0].get("CUSTOM"):
+        if not record or not record.get("CUSTOM"):
             u = deta.Updater()
             u.set("CUSTOM", {"youtube": ""})
             await db.update(m.guild_id, u)
