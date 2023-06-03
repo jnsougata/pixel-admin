@@ -34,8 +34,6 @@ async def dialogue_command(i: discohook.Interaction):
         embed = discohook.Embed(description=f'> ✅ Custom Dialogue set for YouTube Feed\n\n```\n{dialogue}\n```')
         await m.response(embed=embed, ephemeral=True)
 
-    await i.send_modal(modal=modal)
-
     modal.add_field("Custom Dialogue", "dialogue", required=True, style=discohook.TextInputFieldLength.long)
     await i.send_modal(modal=modal)
 
