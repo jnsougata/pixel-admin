@@ -18,5 +18,9 @@ micros:
           description: "Discord Log Channel ID"
         - name: COLLECTION_KEY
           description: "Deta Space Collection Key"
+        - name: BASE_NAME
+          description: "Deta Space Collection Base Name"
+        - name: DRIVE_NAME
+          description: "Deta Space Collection Drive Name"
     public_routes:
       - "/interactions"
