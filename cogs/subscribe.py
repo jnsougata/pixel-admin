@@ -42,14 +42,14 @@ async def fetch_channel(channel_id: str) -> dict:
         ),
         discohook.StringOption("url", "youtube channel url", required=True),
     ],
-    permissions=[discohook.Permissions.manage_guild],
+    permissions=[discohook.Permission.manage_guild],
     dm_access=False,
 )
 async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Channel):
-    await i.defer(ephemeral=True)
+    await i.response.defer(ephemeral=True)
     channel_info = await fetch_channel(form_id(url))
     if not channel_info:
-        return await i.followup("Invalid channel url", ephemeral=True)
+        return await i.response.followup("Invalid channel url", ephemeral=True)
     channel_id = channel_info["id"]
     try:
         record = await db.get(i.guild_id)
@@ -57,7 +57,7 @@ async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Chann
         await db.put(deta.Record({"CHANNELS": {}}, key=i.guild_id))
         record = {"CHANNELS": {}}
     if record.get("CHANNELS") and len(record["CHANNELS"]) >= 10:
-        return await i.followup("> ⚠️ Max subscription limit reached!")
+        return await i.response.followup("> ⚠️ Max subscription limit reached!")
     elif not record.get("CHANNELS"):
         updater = deta.Updater()
         updater.set(
@@ -96,7 +96,7 @@ async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Chann
         emd.thumbnail(channel_info["avatar"])
     if banner:
         emd.image(channel_info["banner"])
-    await i.followup(embed=emd, ephemeral=True)
+    await i.response.followup(embed=emd, ephemeral=True)
 
 
 def setup(app: discohook.Client):

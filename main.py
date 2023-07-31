@@ -12,6 +12,7 @@ app = discohook.Client(
     application_id=os.getenv("APPLICATION_ID"),
     public_key=os.getenv("PUBLIC_KEY"),
     token=os.getenv("DISCORD_TOKEN"),
+    password=os.getenv("APPLICATION_PASSWORD"),
 )
 
 app.load_modules("cogs")
@@ -21,7 +22,8 @@ app.load_modules("cogs")
 async def index():
     return {"message": "PixeL is Online!"}
 
-@app.on_error
+
+@app.on_error()
 async def on_error(i: discohook.Interaction, e: Exception):
     embed = discohook.Embed(
         title='Oops!',
@@ -32,9 +34,9 @@ async def on_error(i: discohook.Interaction, e: Exception):
         color=0xff0000
     )
     if i.responded:
-        await i.followup(embed=embed, ephemeral=True)
+        await i.response.followup(embed=embed, ephemeral=True)
     else:
-        await i.response(embed=embed, ephemeral=True)
+        await i.response.send(embed=embed, ephemeral=True)
     err = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
     embed = discohook.Embed(
         title='Stack Trace', 
@@ -43,9 +45,11 @@ async def on_error(i: discohook.Interaction, e: Exception):
     )
     await app.send_message(os.getenv("LOG_CHANNEL_ID"), embed=embed)
 
+
 @app.get("/{guild_id}/subscriptions")
 async def subscriptions(guild_id: int):
-    return JSONResponse(await get_subscriptions(guild_id))
+    return JSONResponse(await get_subscriptions(str(guild_id)))
+
 
 @app.post("/notify")
 async def notify(request: Request):

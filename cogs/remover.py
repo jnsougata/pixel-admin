@@ -28,7 +28,7 @@ async def fetch_channel(channel_id: str) -> dict:
             ]
         ),
     ],
-    permissions=[discohook.Permissions.manage_guild],
+    permissions=[discohook.Permission.manage_guild],
     dm_access=False,
 )
 async def remove(i: discohook.Interaction, option: int):
@@ -36,9 +36,9 @@ async def remove(i: discohook.Interaction, option: int):
         try:
             record = await db.get(i.guild_id)
         except deta.NotFound:
-            return await i.response("> ⚠️ No channels subscribed", ephemeral=True)
+            return await i.response.send("> ⚠️ No channels subscribed", ephemeral=True)
         else:
-            await i.defer(ephemeral=True)
+            await i.response.defer(ephemeral=True)
             channel_ids = list(record.get("CHANNELS", {}).keys())
             tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
             channels = await asyncio.gather(*tasks)
@@ -55,19 +55,19 @@ async def remove(i: discohook.Interaction, option: int):
                 for value in values:
                     updater.delete(f"CHANNELS.{value}")
                 await db.update(ci.guild_id, updater)
-                await ci.update_message("> ✅ Unsubscribed selected channels(s)", view=None, embed=None)
+                await ci.message.edit("> ✅ Unsubscribed selected channels(s)", view=None, embed=None)
 
             view = discohook.View()
             view.add_select(channel_menu)
-            await i.followup(view=view)
+            await i.response.followup(view=view)
 
     elif option == 2:
         await db.put(deta.Record({"PINGROLE": None}, key=i.guild_id))
-        await i.response("> ✅ PingRole removed", ephemeral=True)
+        await i.response.send("> ✅ PingRole removed", ephemeral=True)
 
     elif option == 3:
         await db.put(deta.Record({"RECEPTION": None}, key=i.guild_id))
-        await i.response("> ✅ Welcomer removed", ephemeral=True)
+        await i.response.send("> ✅ Welcomer removed", ephemeral=True)
 
 
 def setup(app: discohook.Client):

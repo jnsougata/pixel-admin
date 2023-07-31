@@ -33,7 +33,7 @@ async def help_command(i: discohook.Interaction):
             f'\nuse </overview:1112284625579024455> and click on the image.'
         )
     )
-    await i.response(embed=embed, view=view)
+    await i.response.send(embed=embed, view=view)
 
 
 def setup(app: discohook.Client):

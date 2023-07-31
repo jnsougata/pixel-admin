@@ -6,8 +6,11 @@ micros:
     src: ./
     engine: python3.9
     primary: true
+    public: true
     presets:
       env:
+        - name: APPLICATION_PASSWORD
+          description: "Password to access the application dashboard"
         - name: APPLICATION_ID
           description: "Discord Application ID"
         - name: PUBLIC_KEY
@@ -22,5 +25,3 @@ micros:
           description: "Deta Space Collection Base Name"
         - name: DRIVE_NAME
           description: "Deta Space Collection Drive Name"
-    public_routes:
-      - "/interactions"
