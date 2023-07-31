@@ -93,9 +93,9 @@ async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Chann
     avatar = channel_info.get("avatar")
     banner = channel_info.get("banner")
     if avatar:
-        emd.thumbnail(channel_info["avatar"])
+        emd.set_thumbnail(channel_info["avatar"])
     if banner:
-        emd.image(channel_info["banner"])
+        emd.set_image(channel_info["banner"])
     await i.response.followup(embed=emd, ephemeral=True)
 
 

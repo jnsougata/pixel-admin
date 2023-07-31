@@ -51,6 +51,7 @@ async def remove(i: discohook.Interaction, option: int):
 
             @channel_menu.on_interaction
             async def selection_menu(ci: discohook.Interaction, values: list):
+                await ci.response.defer(ephemeral=True)
                 updater = deta.Updater()
                 for value in values:
                     updater.delete(f"CHANNELS.{value}")

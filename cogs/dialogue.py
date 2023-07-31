@@ -13,7 +13,7 @@ feed = (
 @discohook.modal(
     "YouTube Feed Custom Dialogue",
     fields=[discohook.TextInput(
-        "Options",
+        "Dialogue",
         "dialogue",
         default_text=feed,
         style=discohook.TextInputFieldLength.long,

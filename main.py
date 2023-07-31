@@ -24,7 +24,7 @@ async def index():
 
 
 @app.on_error()
-async def on_error(i: discohook.Interaction, e: Exception):
+async def on_error(_, e: discohook.GlobalException):
     embed = discohook.Embed(
         title='Oops!',
         description=f'Something went wrong!'
@@ -33,10 +33,10 @@ async def on_error(i: discohook.Interaction, e: Exception):
                     f'\n\nTo Join Development Server [Click Here](https://discord.gg/ChJbUv7z8V)',
         color=0xff0000
     )
-    if i.responded:
-        await i.response.followup(embed=embed, ephemeral=True)
+    if e.interaction.responded:
+        await e.interaction.response.followup(embed=embed, ephemeral=True)
     else:
-        await i.response.send(embed=embed, ephemeral=True)
+        await e.interaction.response.send(embed=embed, ephemeral=True)
     err = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
     embed = discohook.Embed(
         title='Stack Trace', 
