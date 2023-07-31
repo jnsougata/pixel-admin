@@ -13,6 +13,21 @@ async def fetch_channel(channel_id: str) -> dict:
                 return await resp.json()
 
 
+channel_select = discohook.Select(
+    placeholder="select channel(s) from list",
+)
+
+
+@channel_select.on_interaction
+async def selection_menu(i: discohook.Interaction, values: list):
+    await i.response.defer(ephemeral=True)
+    updater = deta.Updater()
+    for value in values:
+        updater.delete(f"CHANNELS.{value}")
+    await db.update(i.guild_id, updater)
+    await i.response.followup("> ✅ Unsubscribed selected channels(s)")
+
+
 @discohook.command(
     name="remove",
     description="remove a previously set option",
@@ -43,23 +58,14 @@ async def remove(i: discohook.Interaction, option: int):
             tasks = [fetch_channel(channel_id) for channel_id in channel_ids]
             channels = await asyncio.gather(*tasks)
             valids = [channel for channel in channels if channel]
-            channel_menu = discohook.Select(
-                options=[discohook.SelectOption(channel["name"], channel["id"]) for channel in valids],
-                max_values=len(valids),
-                placeholder="select channel(s) from list",
-            )
-
-            @channel_menu.on_interaction
-            async def selection_menu(ci: discohook.Interaction, values: list):
-                await ci.response.defer(ephemeral=True)
-                updater = deta.Updater()
-                for value in values:
-                    updater.delete(f"CHANNELS.{value}")
-                await db.update(ci.guild_id, updater)
-                await ci.message.edit("> ✅ Unsubscribed selected channels(s)", view=None, embed=None)
+            options = [
+                discohook.SelectOption(f"{channel['name']} ({channel['id']})", channel['id']) for channel in valids
+            ]
+            channel_select.options = options
+            channel_select.max_values = len(options)
 
             view = discohook.View()
-            view.add_select(channel_menu)
+            view.add_select(channel_select)
             await i.response.followup(view=view)
 
     elif option == 2:
