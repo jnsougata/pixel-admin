@@ -1,5 +1,5 @@
 v: 0
-app_name: PixeL
+app_name: "PixeL Admin"
 icon: ./assets/icon.png
 micros:
   - name: backend
