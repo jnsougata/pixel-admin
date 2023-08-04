@@ -11,7 +11,7 @@ from utils.database import db, drive
             required=True,
             choices=[
                 discohook.Choice("YouTube", 1),
-                discohook.Choice("Pingrole", 2),
+                discohook.Choice("Ping Role", 2),
                 discohook.Choice("Welcomer", 3),
             ]
         ),
