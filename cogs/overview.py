@@ -13,6 +13,7 @@ from utils.database import db, drive
                 discohook.Choice("YouTube", 1),
                 discohook.Choice("Ping Role", 2),
                 discohook.Choice("Welcomer", 3),
+                discohook.Choice("Server Token", 4),
             ]
         ),
     ],
@@ -62,6 +63,16 @@ async def overview(i: discohook.Interaction, option: int):
                 embed.set_image("attachment://welcome_card.png")
                 file = discohook.File("welcome_card.png", content=card_data)
                 await i.response.followup(embed=embed, file=file)
+        elif option == 4:
+            if not record.get("TOKEN"):
+                return await i.response.followup("> ⚠️ No server token set")
+            else:
+                await i.response.followup(
+                    embed=discohook.Embed(
+                        title="Server Token",
+                        description=f"```{record['TOKEN']}```"
+                    )
+                )
 
 
 def setup(client: discohook.Client):
