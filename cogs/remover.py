@@ -20,12 +20,12 @@ channel_select = discohook.Select(
 
 @channel_select.on_interaction()
 async def selection_menu(i: discohook.Interaction, values: list):
-    await i.response.defer(ephemeral=True)
+    await i.response.defer()
     updater = deta.Updater()
     for value in values:
         updater.delete(f"CHANNELS.{value}")
     await db.update(i.guild_id, updater)
-    await i.response.followup("> ✅ Unsubscribed selected channels(s)")
+    await i.response.followup("> ✅ Unsubscribed selected channels(s)", ephemeral=True)
 
 
 @discohook.command(

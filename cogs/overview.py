@@ -34,7 +34,7 @@ async def overview(i: discohook.Interaction, option: int):
                 return await i.response.followup("> ⚠️ No channels subscribed")
             else:
                 channel_ids = list(record["CHANNELS"].keys())
-                embed = discohook.Embed(title="Subscribed Channels")
+                embed = discohook.Embed(title="Subscriptions")
                 embed.description = "\n".join(
                     [f"[{channel_id}](https://youtube.com/channel/{channel_id})" for channel_id in channel_ids])
                 await i.response.followup(embed=embed)
