@@ -1,12 +1,13 @@
 import os
 import traceback
+
+import deta
 import discohook
 from fastapi import Request
 from fastapi.responses import JSONResponse
-
-from utils.database import get_subscriptions, update_subscriptions
 from deta import Updater
 from notifier import custom_message
+from utils.database import db
 
 app = discohook.Client(
     application_id=os.getenv("APPLICATION_ID"),
@@ -46,32 +47,41 @@ async def on_error(_, e: discohook.GlobalException):
     await app.send_message(os.getenv("LOG_CHANNEL_ID"), embed=embed)
 
 
-@app.get("/{guild_id}/subscriptions")
-async def subscriptions(guild_id: int):
-    return JSONResponse(await get_subscriptions(str(guild_id)))
+@app.get("/subscriptions")
+async def subscriptions(request: Request):
+    token = request.headers.get("X-Server-Token")
+    if not token:
+        return JSONResponse({"message": "Unauthorized"}, status_code=401)
+    guild_id = token.split('.')[0]
+    try:
+        data = await db.get(guild_id)
+    except deta.NotFound:
+        return JSONResponse({"message": "No subscriptions found"}, status_code=404)
+    if data and data.get("TOKEN") == token:
+        return JSONResponse(data)
 
 
 @app.post("/notify")
 async def notify(request: Request):
-    data = await request.json()
-    guild_id = data["guild_id"]
-    subs = await get_subscriptions(guild_id)
-    if not subs:
-        return JSONResponse({"message": "No subscriptions found"})
-    channels = subs.get("CHANNELS", {})
-    channel_id = data["channel_id"]
-    if not channels.get(channel_id):
-        return JSONResponse({"message": "No subscriptions found"})
-    channel = channels[channel_id]
-    channel_name = channel["channel_name"]
-    video_url = data["video_url"]
-    receiver = channel["receiver"]
-    published_timestamp = int(data['video_published'])
-    last_published_timestamp = int(channel.get('last_published', 0))
-    if not (published_timestamp > last_published_timestamp):
-        return JSONResponse({"message": "No new videos found"})
+    token = request.headers.get("X-Server-Token")
+    if not token:
+        return JSONResponse({"message": "Unauthorized"}, status_code=401)
+    guild_id = token.split('.')[0]
+    scanned_data = await request.json()
+    channel_name = scanned_data['channel_name']
+    video_url = scanned_data['video_url']
+    channel_id = scanned_data['channel_id']
+    receiver_id = scanned_data['receiver_id']
+    published_timestamp = int(scanned_data['video_published'])
+    data = await db.get(guild_id)
+    if not (data and data.get("TOKEN") == token):
+        return JSONResponse({"message": "Unauthorized"}, status_code=401)
+    data.update({
+        "channel_name": channel_name,
+        "video_url": video_url,
+    })
+    await app.send_message(receiver_id, custom_message(guild_id, data))
     u = Updater()
     u.set(f'CHANNELS.{channel_id}.last_published', published_timestamp)
-    await update_subscriptions(guild_id, u)
-    message = custom_message(guild_id, channel_name, video_url, subs)
-    await app.send_message(receiver, message)
+    await db.update(guild_id, u)
+    return JSONResponse({"message": "Success"}, status_code=200)
