@@ -1,8 +1,9 @@
 import discohook
 
 
-@discohook.command(name="help", description="get help with the bot")
+@discohook.command(name="help")
 async def help_command(i: discohook.Interaction):
+    """Get help with the bot."""
     inv = 'https://top.gg/bot/848304171814879273/invite'
     sup = 'https://discord.gg/VE5qRFfmG2'
     uv = 'https://top.gg/bot/848304171814879273/vote'

@@ -1,12 +1,9 @@
-import io
-
 import deta
 import discohook
 from utils.database import db, drive
 
 
 @discohook.command(
-    name="overview",
     options=[
         discohook.IntegerOption(
             "option",
@@ -24,7 +21,7 @@ from utils.database import db, drive
 )
 async def overview(i: discohook.Interaction, option: int):
     """
-    check any currently set server config
+    Check any currently set server config.
     """
     await i.response.defer(ephemeral=True)
     try:
@@ -62,8 +59,8 @@ async def overview(i: discohook.Interaction, option: int):
                 except deta.NotFound:
                     card_stream = await drive.get("covers/default_card.png")
                 card_data = await card_stream.read()
-                embed.image("attachment://welcome_card.png")
-                file = discohook.File("welcome_card.png", content=io.BytesIO(card_data))
+                embed.set_image("attachment://welcome_card.png")
+                file = discohook.File("welcome_card.png", content=card_data)
                 await i.response.followup(embed=embed, file=file)
 
 

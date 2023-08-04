@@ -18,7 +18,7 @@ channel_select = discohook.Select(
 )
 
 
-@channel_select.on_interaction
+@channel_select.on_interaction()
 async def selection_menu(i: discohook.Interaction, values: list):
     await i.response.defer(ephemeral=True)
     updater = deta.Updater()
@@ -29,8 +29,6 @@ async def selection_menu(i: discohook.Interaction, values: list):
 
 
 @discohook.command(
-    name="remove",
-    description="remove a previously set option",
     options=[
         discohook.IntegerOption(
             "option",
@@ -38,7 +36,7 @@ async def selection_menu(i: discohook.Interaction, values: list):
             required=True,
             choices=[
                 discohook.Choice("YouTube", 1),
-                discohook.Choice("Pingrole", 2),
+                discohook.Choice("Ping Role", 2),
                 discohook.Choice("Welcomer", 3),
             ]
         ),
@@ -47,6 +45,9 @@ async def selection_menu(i: discohook.Interaction, values: list):
     dm_access=False,
 )
 async def remove(i: discohook.Interaction, option: int):
+    """
+    Remove a previously set option.
+    """
     if option == 1:
         try:
             record = await db.get(i.guild_id)
@@ -70,7 +71,7 @@ async def remove(i: discohook.Interaction, option: int):
 
     elif option == 2:
         await db.put(deta.Record({"PINGROLE": None}, key=i.guild_id))
-        await i.response.send("> ✅ PingRole removed", ephemeral=True)
+        await i.response.send("> ✅ Ping Role removed", ephemeral=True)
 
     elif option == 3:
         await db.put(deta.Record({"RECEPTION": None}, key=i.guild_id))

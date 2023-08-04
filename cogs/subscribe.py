@@ -28,24 +28,25 @@ async def fetch_channel(channel_id: str) -> dict:
 
 
 @discohook.command(
-    name="subscribe",
-    description="subscribe to a youtube feed",
     options=[
         discohook.ChannelOption(
             "channel",
-            "text channel to send the updates to",
+            "Text Channel to send the updates to",
             required=True,
             channel_types=[
                 discohook.ChannelType.guild_text,
                 discohook.ChannelType.guild_news
             ]
         ),
-        discohook.StringOption("url", "youtube channel url", required=True),
+        discohook.StringOption("url", "YouTube Channel URL", required=True),
     ],
     permissions=[discohook.Permission.manage_guild],
     dm_access=False,
 )
 async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Channel):
+    """
+    Subscribe to a YouTube channel feed.
+    """
     await i.response.defer(ephemeral=True)
     channel_info = await fetch_channel(form_id(url))
     if not channel_info:

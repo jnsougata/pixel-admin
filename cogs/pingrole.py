@@ -4,13 +4,14 @@ from utils.database import db
 
 
 @discohook.command(
-    name="pingrole",
-    description="set the role to ping with youtube feeds",
     options=[discohook.RoleOption("role", "the role to ping", required=True)],
     permissions=[discohook.Permission.manage_guild],
     dm_access=False,
 )
 async def pingrole(i: discohook.Interaction, role: discohook.Role):
+    """
+    Set the role to ping with YouTube feeds.
+    """
     if role.managed:
         return await i.response.send("> ⚠️ Role must be a guild role", ephemeral=True)
     await i.response.defer(ephemeral=True)
