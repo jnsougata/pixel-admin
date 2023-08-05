@@ -75,7 +75,7 @@ async def notify(request: Request):
         "channel_name": channel_name,
         "video_url": video_url,
     })
-    await app.send_message(receiver_id, custom_message(guild_id, data))
+    await app.send_message(receiver_id, custom_message(data))
     u = Updater()
     u.set(f'CHANNELS.{channel_id}.last_published', published_timestamp)
     await db.update(guild_id, u)
