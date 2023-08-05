@@ -1,6 +1,5 @@
 import os
 import deta
-from deta import NotFound, Updater
 
 
 service = deta.Deta(os.getenv('COLLECTION_KEY'))

@@ -19,11 +19,6 @@ app = discohook.Client(
 app.load_modules("cogs")
 
 
-@app.get("/")
-async def index():
-    return {"message": "PixeL is Online!"}
-
-
 @app.on_error()
 async def on_error(_, e: discohook.GlobalException):
     embed = discohook.Embed(
@@ -72,7 +67,7 @@ async def notify(request: Request):
     video_url = scanned_data['video_url']
     channel_id = scanned_data['channel_id']
     receiver_id = scanned_data['receiver_id']
-    published_timestamp = int(scanned_data['video_published'])
+    published_timestamp = scanned_data['video_published']
     data = await db.get(guild_id)
     if not (data and data.get("TOKEN") == token):
         return JSONResponse({"message": "Unauthorized"}, status_code=401)

@@ -1,6 +1,3 @@
-from typing import Optional
-
-
 def create_ping(guild_id: str, cache: dict) -> str:
     role_id = cache[guild_id].get('PINGROLE')
     if not (role_id and role_id.isdigit()):
@@ -11,12 +8,12 @@ def create_ping(guild_id: str, cache: dict) -> str:
 def custom_message(
     guild_id: str,
     data: dict
-) -> Optional[str]:
+) -> str:
     ping = create_ping(guild_id, data)
     channel_name = data['channel_name']
     video_url = data['video_url']
     default = (
-        f'> <:YouTube:862734568708898856> **{channel_name}** has a new content {ping}\n'
+        f'> [SPACE] <:YouTube:862734568708898856> **{channel_name}** has a new content {ping}\n'
         f'> Go check it out! {video_url}'
     )
     scopes = {'[ping]': ping, '[name]': channel_name, '[url]': video_url}
