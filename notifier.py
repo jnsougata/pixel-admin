@@ -1,15 +1,12 @@
-def create_ping(guild_id: str, cache: dict) -> str:
-    role_id = cache[guild_id].get('PINGROLE')
+def create_ping(data: dict) -> str:
+    role_id = data.get('PINGROLE')
     if not (role_id and role_id.isdigit()):
         return ''
     return f'<@&{role_id}>'
 
 
-def custom_message(
-    guild_id: str,
-    data: dict
-) -> str:
-    ping = create_ping(guild_id, data)
+def custom_message(data: dict) -> str:
+    ping = create_ping(data)
     channel_name = data['channel_name']
     video_url = data['video_url']
     default = (
@@ -17,7 +14,7 @@ def custom_message(
         f'> Go check it out! {video_url}'
     )
     scopes = {'[ping]': ping, '[name]': channel_name, '[url]': video_url}
-    data = data[guild_id].get('CUSTOM')
+    data = data.get('CUSTOM')
     if not (data and data.get("youtube")):
         return default
     text = data['youtube']
