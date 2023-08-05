@@ -10,7 +10,7 @@ def custom_message(data: dict) -> str:
     channel_name = data['channel_name']
     video_url = data['video_url']
     default = (
-        f'> [SPACE] <:YouTube:862734568708898856> **{channel_name}** has a new content {ping}\n'
+        f'> <:YouTube:862734568708898856> **{channel_name}** has a new content {ping}\n'
         f'> Go check it out! {video_url}'
     )
     scopes = {'[ping]': ping, '[name]': channel_name, '[url]': video_url}
