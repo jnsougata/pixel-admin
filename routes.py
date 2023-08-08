@@ -4,7 +4,6 @@ from deta import Updater
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-
 from utils.database import base, custom_message
 
 
