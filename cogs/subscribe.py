@@ -33,10 +33,7 @@ async def fetch_channel(channel_id: str) -> dict:
             "channel",
             "Text Channel to send the updates to",
             required=True,
-            channel_types=[
-                discohook.ChannelType.guild_text,
-                discohook.ChannelType.guild_news
-            ]
+            channel_types=[discohook.ChannelType.guild_text, discohook.ChannelType.guild_announcement]
         ),
         discohook.StringOption("url", "YouTube Channel URL", required=True),
     ],

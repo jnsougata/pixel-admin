@@ -35,9 +35,9 @@ async def selection_menu(i: discohook.Interaction, values: list):
             "the option to remove",
             required=True,
             choices=[
-                discohook.Choice("YouTube", 1),
-                discohook.Choice("Ping Role", 2),
-                discohook.Choice("Welcomer", 3),
+                discohook.Choice(name="YouTube", value=1),
+                discohook.Choice(name="Ping Role", value=2),
+                discohook.Choice(name="Welcomer", value=3),
             ]
         ),
     ],

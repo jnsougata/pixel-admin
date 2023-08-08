@@ -10,18 +10,10 @@ micros:
     presets:
       env:
         - name: APPLICATION_PASSWORD
-          description: "Password to access the application dashboard"
         - name: APPLICATION_ID
-          description: "Discord Application ID"
         - name: PUBLIC_KEY
-          description: "Discord Public Key"
         - name: DISCORD_TOKEN
-          description: "Discord Bot Token"
         - name: LOG_CHANNEL_ID
-          description: "Discord Log Channel ID"
         - name: COLLECTION_KEY
-          description: "Deta Space Collection Key"
         - name: BASE_NAME
-          description: "Deta Space Collection Base Name"
         - name: DRIVE_NAME
-          description: "Deta Space Collection Drive Name"
