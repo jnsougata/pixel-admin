@@ -2,7 +2,7 @@ import secrets
 
 import deta
 import discohook
-from utils.database import db
+from utils.database import base
 
 
 @discohook.command(
@@ -17,7 +17,7 @@ async def server_token(i: discohook.Interaction):
     token = f"{i.guild_id}.{secrets.token_urlsafe(32)}"
     updater = deta.Updater()
     updater.set("TOKEN", token)
-    await db.update(i.guild_id, updater)
+    await base.update(i.guild_id, updater)
     embed = discohook.Embed(description=f'> ✅ Token generated successfully\n\n```\n{token}\n```')
     await i.response.followup(embed=embed)
 

@@ -1,6 +1,6 @@
 import deta
 import discohook
-from utils.database import db, drive
+from utils.database import base, drive
 
 
 @discohook.command(
@@ -26,7 +26,7 @@ async def overview(i: discohook.Interaction, option: int):
     """
     await i.response.defer(ephemeral=True)
     try:
-        record = await db.get(i.guild_id)
+        record = await base.get(i.guild_id)
     except deta.NotFound:
         return await i.response.followup("> ⚠️ No Server Config Found")
     else:

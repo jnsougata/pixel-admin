@@ -2,7 +2,7 @@ import re
 import deta
 import aiohttp
 import discohook
-from utils.database import db
+from utils.database import base
 from datetime import datetime
 
 
@@ -53,9 +53,9 @@ async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Chann
         return await i.response.followup("Invalid channel url", ephemeral=True)
     channel_id = channel_info["id"]
     try:
-        record = await db.get(i.guild_id)
+        record = await base.get(i.guild_id)
     except deta.NotFound:
-        await db.put(deta.Record({"CHANNELS": {}}, key=i.guild_id))
+        await base.put(deta.Record({"CHANNELS": {}}, key=i.guild_id))
         record = {"CHANNELS": {}}
     if record.get("CHANNELS") and len(record["CHANNELS"]) >= 10:
         return await i.response.followup("> ⚠️ Max subscription limit reached!")
@@ -79,7 +79,7 @@ async def subscribe(i: discohook.Interaction, url: str, channel: discohook.Chann
                 'last_published': str(int(datetime.utcnow().timestamp()))
             }
         )
-    await db.update(i.guild_id, updater)
+    await base.update(i.guild_id, updater)
 
     emd = discohook.Embed(
         title=channel_info["name"],

@@ -1,6 +1,6 @@
 import deta
 import discohook
-from utils.database import db
+from utils.database import base
 
 
 feed = (
@@ -23,14 +23,14 @@ feed = (
     ]
 )
 async def dialogue_modal(m: discohook.Interaction, custom: str):
-    record = await db.get(m.guild_id)
+    record = await base.get(m.guild_id)
     if not record or not record.get("CUSTOM"):
         u = deta.Updater()
         u.set("CUSTOM", {"youtube": ""})
-        await db.update(m.guild_id, u)
+        await base.update(m.guild_id, u)
     updater = deta.Updater()
     updater.set("CUSTOM.youtube", custom)
-    await db.update(m.guild_id, updater)
+    await base.update(m.guild_id, updater)
     embed = discohook.Embed(description=f'> ✅ Custom Dialogue set for YouTube Feed\n\n```\n{custom}\n```')
     await m.response.send(embed=embed, ephemeral=True)
 

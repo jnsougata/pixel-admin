@@ -1,6 +1,6 @@
 import deta
 import discohook
-from utils.database import db
+from utils.database import base
 
 
 @discohook.command(
@@ -17,7 +17,7 @@ async def pingrole(i: discohook.Interaction, role: discohook.Role):
     await i.response.defer(ephemeral=True)
     updater = deta.Updater()
     updater.set("PINGROLE", role.id)
-    await db.update(i.guild_id, updater)
+    await base.update(i.guild_id, updater)
     mention = role.mention if role.position != 0 else '@everyone'
     emd = discohook.Embed(description=f'> ✅ {mention} added successfully as pingrole', color=0xc4302b)
     await i.response.followup(embed=emd, ephemeral=True)

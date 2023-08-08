@@ -2,7 +2,7 @@ import deta
 import asyncio
 import aiohttp
 import discohook
-from utils.database import db
+from utils.database import base
 
 
 async def fetch_channel(channel_id: str) -> dict:
@@ -24,7 +24,7 @@ async def selection_menu(i: discohook.Interaction, values: list):
     updater = deta.Updater()
     for value in values:
         updater.delete(f"CHANNELS.{value}")
-    await db.update(i.guild_id, updater)
+    await base.update(i.guild_id, updater)
     await i.response.followup("> ✅ Unsubscribed selected channels(s)", ephemeral=True)
 
 
@@ -50,7 +50,7 @@ async def remove(i: discohook.Interaction, option: int):
     """
     if option == 1:
         try:
-            record = await db.get(i.guild_id)
+            record = await base.get(i.guild_id)
         except deta.NotFound:
             return await i.response.send("> ⚠️ No channels subscribed", ephemeral=True)
         else:
@@ -70,11 +70,11 @@ async def remove(i: discohook.Interaction, option: int):
             await i.response.followup(view=view)
 
     elif option == 2:
-        await db.put(deta.Record({"PINGROLE": None}, key=i.guild_id))
+        await base.put(deta.Record({"PINGROLE": None}, key=i.guild_id))
         await i.response.send("> ✅ Ping Role removed", ephemeral=True)
 
     elif option == 3:
-        await db.put(deta.Record({"RECEPTION": None}, key=i.guild_id))
+        await base.put(deta.Record({"RECEPTION": None}, key=i.guild_id))
         await i.response.send("> ✅ Welcomer removed", ephemeral=True)
 
 
